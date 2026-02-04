@@ -225,7 +225,16 @@ question.style.display="none";
 teddy.src="https://imgs.search.brave.com/SDYB0IPQt1koX0PFrUq37dsOk1-p8T3xWQAgZBxtn08/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIwLzRj/L2YwLzIwNGNmMDI4/ZWRlMGQ1NjkwODg2/ZjFjNjFhNDZmZTlm/LmpwZw";
 
 celebration.classList.remove("hidden");
-music.play();
+music.load();
+music.currentTime = 0;
+
+const playPromise = music.play();
+
+if (playPromise !== undefined) {
+  playPromise
+    .then(() => console.log("Audio playing"))
+    .catch(err => console.log("Audio error:", err));
+}
 
 loveBurst();
 startHearts();
@@ -265,6 +274,7 @@ setTimeout(()=>b.remove(),1000);
 
 </body>
 </html>
+
 
 
 
