@@ -24,7 +24,6 @@ color:white;
 }
 
 /* Teddy */
-
 #teddy{
 width:170px;
 animation:bounce 1.6s infinite;
@@ -37,14 +36,12 @@ margin-bottom:15px;
 }
 
 /* Question */
-
 h1{
 font-size:2.3em;
 margin-bottom:20px;
 }
 
 /* Button wrapper */
-
 .buttons{
 position:relative;
 width:320px;
@@ -53,7 +50,6 @@ margin:auto;
 }
 
 /* Buttons */
-
 button{
 position:absolute;
 border:none;
@@ -65,7 +61,6 @@ transition:none;
 }
 
 /* YES */
-
 #yesBtn{
 background:#ff4f7b;
 color:white;
@@ -73,7 +68,6 @@ left:0;
 }
 
 /* NO */
-
 #noBtn{
 background:white;
 color:#ff4f7b;
@@ -81,11 +75,9 @@ right:0;
 }
 
 /* Hidden */
-
 .hidden{display:none}
 
 /* Hearts */
-
 .heart{
 position:fixed;
 color:red;
@@ -99,7 +91,6 @@ animation:floatUp 4s linear forwards;
 }
 
 /* Burst */
-
 .burst{
 position:fixed;
 width:12px;
@@ -117,7 +108,6 @@ opacity:0;
 }
 
 /* Celebration */
-
 #celebration{
 margin-top:30px;
 }
@@ -136,72 +126,35 @@ height:320px;
 object-fit:cover;
 border-radius:20px;
 }
-  /* ---------- Mobile Optimization ---------- */
 
+/* ---------- Mobile Optimization ---------- */
 @media (max-width: 600px){
 
-body{
-padding:20px;
-}
+body{padding:20px;}
 
-h1{
-font-size:1.7em;
-}
+h1{font-size:1.7em;}
 
-#teddy{
-width:120px;
-}
+#teddy{width:120px;}
 
-.buttons{
-width:260px;
-height:65px;
-}
+.buttons{width:260px;height:65px;}
 
-button{
-padding:12px 26px;
-font-size:16px;
-}
+button{padding:12px 26px;font-size:16px;}
 
-#celebration h2{
-font-size:1.3em;
-}
+#celebration h2{font-size:1.3em;}
 
-p{
-font-size:15px;
-line-height:1.4;
-padding:0 8px;
-}
+p{font-size:15px;line-height:1.4;padding:0 8px;}
 
-.gallery{
-gap:10px;
-}
+.gallery{gap:10px;}
 
-.gallery img{
-width:160px;
-height:180px;
-}
-
+.gallery img{width:160px;height:180px;}
 }
 
 /* ---------- Extra Small Phones ---------- */
-
 @media (max-width: 400px){
-
-h1{
-font-size:1.5em;
+h1{font-size:1.5em;}
+#teddy{width:105px;}
+.gallery img{width:140px;height:160px;}
 }
-
-#teddy{
-width:105px;
-}
-
-.gallery img{
-width:140px;
-height:160px;
-}
-
-}
-
 
 </style>
 </head>
@@ -213,6 +166,9 @@ height:160px;
 <img id="teddy"
 src="https://imgs.search.brave.com/wO9V1f4mWiGl34wF3Rf49O5PefQNkBsIji-YxuMMovk/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9wbmcu/cG5ndHJlZS5jb20v/cG5nLXZlY3Rvci8y/MDI0MDgwMS9vdXJt/aWQvcG5ndHJlZS1i/ZWF1dGlmdWwtZW1v/amktdGVkZHktYmVh/ci1zdGlja2VyLXBu/Zy1pbWFnZV8xMzMy/Mjk3MC5wbmc">
 
+<!-- Early February message -->
+<p id="earlyMessage" class="hidden" style="font-size:1.2em;margin-bottom:15px;color:#fff;"></p>
+
 <h1 id="question">Will you be my Valentine? 💖</h1>
 
 <div class="buttons">
@@ -221,18 +177,14 @@ src="https://imgs.search.brave.com/wO9V1f4mWiGl34wF3Rf49O5PefQNkBsIji-YxuMMovk/r
 </div>
 
 <div id="celebration" class="hidden">
-
 <h2>Cheers to our first Valentine’s Day 🥂</h2>
 <h1>YAY 💕</h1>
-
 <p>Somewhere between laughs and late replies,  
 you became my favorite person 💖</p>
-
 <div class="gallery">
 <img src="IMG-20250527-WA0035~2.jpg">
 <img src="Screenshot_20250430-220507.jpg">
 </div>
-
 </div>
 
 <audio id="music" preload="auto">
@@ -249,96 +201,102 @@ const question = document.getElementById("question");
 const teddy = document.getElementById("teddy");
 const celebration = document.getElementById("celebration");
 const music = document.getElementById("music");
+const earlyMessage = document.getElementById("earlyMessage");
+const buttons = document.querySelector(".buttons");
 
 /* Store original NO position */
-
 const original = { x:0, y:0 };
 
 window.onload = ()=>{
-const r = noBtn.getBoundingClientRect();
-original.x = r.left;
-original.y = r.top;
+    const r = noBtn.getBoundingClientRect();
+    original.x = r.left;
+    original.y = r.top;
+
+    // Check date
+    const today = new Date();
+    const feb14 = new Date(today.getFullYear(), 1, 14); // Month is 0-indexed
+
+    if(today < feb14){
+        // Before Feb 14: show only early message + teddy
+        earlyMessage.textContent = "Oh, somebody can't wait till 14th Feb, it seems! 💖";
+        earlyMessage.classList.remove("hidden");
+
+        // Hide rest
+        question.classList.add("hidden");
+        buttons.classList.add("hidden");
+        celebration.classList.add("hidden");
+    } else {
+        // From Feb 14: hide early message, show normal
+        earlyMessage.classList.add("hidden");
+        question.classList.remove("hidden");
+        buttons.classList.remove("hidden");
+    }
 };
 
 /* NO hover = teleport */
-
 noBtn.addEventListener("mouseenter",()=>{
-
-const x = Math.random()*(window.innerWidth-120);
-const y = Math.random()*(window.innerHeight-120);
-
-noBtn.style.transform = 
-`translate(${x-original.x}px, ${y-original.y}px)`;
-
+    const x = Math.random()*(window.innerWidth-120);
+    const y = Math.random()*(window.innerHeight-120);
+    noBtn.style.transform = `translate(${x-original.x}px, ${y-original.y}px)`;
 });
 
 /* YES hover = reset NO */
-
 yesBtn.addEventListener("mouseenter",()=>{
-noBtn.style.transform="translate(0,0)";
+    noBtn.style.transform="translate(0,0)";
 });
 
 /* YES click */
-
 yesBtn.addEventListener("click",()=>{
 
-document.querySelector(".buttons").style.height = "0px";
+    buttons.style.height = "0px";
+    yesBtn.style.display="none";
+    noBtn.style.display="none";
+    question.style.display="none";
 
-yesBtn.style.display="none";
-noBtn.style.display="none";
-question.style.display="none";
+    teddy.src="https://imgs.search.brave.com/SDYB0IPQt1koX0PFrUq37dsOk1-p8T3xWQAgZBxtn08/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIwLzRj/L2YwLzIwNGNmMDI4/ZWRlMGQ1NjkwODg2/ZjFjNjFhNDZmZTlm/LmpwZw";
 
-teddy.src="https://imgs.search.brave.com/SDYB0IPQt1koX0PFrUq37dsOk1-p8T3xWQAgZBxtn08/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzIwLzRj/L2YwLzIwNGNmMDI4/ZWRlMGQ1NjkwODg2/ZjFjNjFhNDZmZTlm/LmpwZw";
+    celebration.classList.remove("hidden");
+    music.load();
+    music.currentTime = 0;
 
-celebration.classList.remove("hidden");
-music.load();
-music.currentTime = 0;
+    const playPromise = music.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => console.log("Audio playing"))
+                 .catch(err => console.log("Audio error:", err));
+    }
 
-const playPromise = music.play();
-
-if (playPromise !== undefined) {
-  playPromise
-    .then(() => console.log("Audio playing"))
-    .catch(err => console.log("Audio error:", err));
-}
-
-loveBurst();
-startHearts();
-
+    loveBurst();
+    startHearts();
 });
 
 /* Hearts */
-
 function startHearts(){
-setInterval(()=>{
-const h=document.createElement("div");
-h.className="heart";
-h.innerHTML="❤️";
-h.style.left=Math.random()*window.innerWidth+"px";
-h.style.bottom="0px";
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),4000);
-},300);
+    setInterval(()=>{
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="❤️";
+        h.style.left=Math.random()*window.innerWidth+"px";
+        h.style.bottom="0px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),4000);
+    },300);
 }
 
 /* Burst */
-
 function loveBurst(){
-for(let i=0;i<30;i++){
-const b=document.createElement("div");
-b.className="burst";
-b.style.left="50%";
-b.style.top="50%";
-b.style.setProperty("--x",(Math.random()*400-200)+"px");
-b.style.setProperty("--y",(Math.random()*400-200)+"px");
-document.body.appendChild(b);
-setTimeout(()=>b.remove(),1000);
-}
+    for(let i=0;i<30;i++){
+        const b=document.createElement("div");
+        b.className="burst";
+        b.style.left="50%";
+        b.style.top="50%";
+        b.style.setProperty("--x",(Math.random()*400-200)+"px");
+        b.style.setProperty("--y",(Math.random()*400-200)+"px");
+        document.body.appendChild(b);
+        setTimeout(()=>b.remove(),1000);
+    }
 }
 
 </script>
 
 </body>
 </html>
-
-
