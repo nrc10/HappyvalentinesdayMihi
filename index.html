@@ -30,16 +30,21 @@
     }
 
     button {
-      padding: 12px 25px;
+      width: 120px;          /* FIXED WIDTH */
+      height: 50px;          /* FIXED HEIGHT */
+      line-height: 26px;     /* vertical text centering */
+      padding: 0;            /* reset padding to avoid stretching */
       font-size: 16px;
       border: none;
       border-radius: 30px;
       cursor: pointer;
       position: absolute;
+      text-align: center;
+      transition: left 0.3s, top 0.3s; /* smooth movement */
     }
 
     #yesBtn { left: 0; background: #ff4d6d; color: white; }
-    #noBtn { right: 0; background: white; color: #ff4d6d; }
+    #noBtn  { right: 0; background: white; color: #ff4d6d; }
 
     #letter, #gallery {
       display: none;
@@ -47,14 +52,14 @@
       max-width: 90%;
     }
 
-    #letter p { margin-top: 10px; font-size: 18px; }
+    #letter p { margin-top: 10px; font-size: 18px; color: #fff; }
 
     .gallery {
       display: flex;
       justify-content: center;
       gap: 10px;
-      flex-wrap: nowrap;
       margin-top: 10px;
+      flex-wrap: nowrap;
     }
 
     .gallery img {
@@ -64,7 +69,6 @@
       border-radius: 10px;
       flex-shrink: 0;
     }
-
   </style>
 </head>
 <body>
@@ -108,7 +112,7 @@
     const originalTop = noBtn.offsetTop;
     let escaped = false;
 
-    // Move NO button randomly
+    // Move NO button randomly anywhere on screen
     function moveNo() {
       if (!escaped) escaped = true;
       const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
@@ -118,10 +122,11 @@
       noBtn.style.position = "fixed";
     }
 
+    // NO button moves on hover or click
     noBtn.addEventListener("mouseenter", moveNo);
     noBtn.addEventListener("click", moveNo);
 
-    // Reset NO button on YES hover
+    // Reset NO button when YES hovered
     yesBtn.addEventListener("mouseenter", () => {
       noBtn.style.position = "absolute";
       noBtn.style.left = originalLeft + "px";
@@ -129,7 +134,7 @@
       escaped = false;
     });
 
-    // YES click behavior
+    // YES click shows YAY, letter, gallery and plays audio
     yesBtn.addEventListener("click", () => {
       yesBtn.style.display = "none";
       noBtn.style.display = "none";
